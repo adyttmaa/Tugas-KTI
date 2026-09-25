@@ -11,18 +11,15 @@ def hitung_chi_square(teks_blok):
     skor_geser = []
     panjang = len(teks_blok)
     
-    # Uji seluruh 26 kemungkinan huruf kunci
     for geser in range(26):
         skor = 0
         teks_dekripsi = ""
         
-        # Lakukan dekripsi sementara pada blok ini
         for char in teks_blok:
             c_val = ord(char) - ord('A')
             p_val = (c_val - geser) % 26
             teks_dekripsi += chr(p_val + ord('A'))
             
-        # Hitung seberapa jauh kemiringannya dari standar bahasa Indonesia
         for huruf in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
             observed = teks_dekripsi.count(huruf)
             expected = panjang * (freq_ind[huruf] / 100)
@@ -32,7 +29,6 @@ def hitung_chi_square(teks_blok):
         huruf_kunci = chr(geser + ord('A'))
         skor_geser.append((skor, huruf_kunci))
         
-    # Urutkan dari skor terkecil (paling cocok dengan bahasa asli)
     skor_geser.sort(key=lambda x: x[0])
     return skor_geser
 
@@ -40,7 +36,6 @@ ciphertext = "FIRADAOIXASAQEHAUVVKKNVRRHOAEGTEVTZDNOHIJAQMVETAUOGN"
 panjang_kunci = 6
 blok = [""] * panjang_kunci
 
-# Pecah menjadi 6 blok
 for i, char in enumerate(ciphertext):
     blok[i % panjang_kunci] += char
 
@@ -48,7 +43,6 @@ print("--- 3 TEBAKAN KUNCI TERATAS PER BLOK (CHI-SQUARE) ---\n")
 for i in range(panjang_kunci):
     tebakan = hitung_chi_square(blok[i])
     print(f"Blok {i+1} ({blok[i]}):")
-    # Menampilkan 3 hasil dengan skor kemiripan terbaik
     print(f"  1. '{tebakan[0][1]}' (Skor: {tebakan[0][0]:.2f})")
     print(f"  2. '{tebakan[1][1]}' (Skor: {tebakan[1][0]:.2f})")
     print(f"  3. '{tebakan[2][1]}' (Skor: {tebakan[2][0]:.2f})\n")
